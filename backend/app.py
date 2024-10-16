@@ -3,10 +3,16 @@ from flask_cors import CORS
 from calculations import get_growth_percentiles
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, resources={r"/*": {"origins": "https://shoedog23.github.io"}})
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
+    app.logger.info('Received calculate request')
     data = request.json
     age = float(data.get('age'))
     weight = float(data.get('weight'))

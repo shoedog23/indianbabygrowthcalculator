@@ -25,7 +25,7 @@ document.getElementById('growth-form').addEventListener('submit', function(event
     })
     .catch((error) => {
         console.error('Error:', error);
-        document.getElementById('results').innerHTML = '<p>An error occurred. Please try again.</p>';
+        document.getElementById('results').innerHTML = `<p>An error occurred: ${error.message}. Please try again.</p>`;
     });
 });
 
