@@ -1,3 +1,5 @@
+let myChart = null;
+
 document.getElementById('growth-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const age = document.getElementById('age').value;
@@ -12,7 +14,12 @@ document.getElementById('growth-form').addEventListener('submit', function(event
         },
         body: JSON.stringify({ age, weight, height, gender }),
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         document.getElementById('results').innerHTML = `
             <h2>Results:</h2>
@@ -20,7 +27,6 @@ document.getElementById('growth-form').addEventListener('submit', function(event
             <p>Weight: ${data.weight} kg (Percentile: ${data.weightPercentile})</p>
             <p>Height: ${data.height} cm (Percentile: ${data.heightPercentile})</p>
         `;
-        
         createChart(data);
     })
     .catch((error) => {
@@ -31,7 +37,17 @@ document.getElementById('growth-form').addEventListener('submit', function(event
 
 function createChart(data) {
     const ctx = document.getElementById('growthChart').getContext('2d');
-    new Chart(ctx, {
+    
+    // Destroy the existing chart if it exists
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Clear the canvas
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    // Create a new chart
+    myChart = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [{
