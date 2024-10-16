@@ -36,15 +36,17 @@ document.getElementById('growth-form').addEventListener('submit', function(event
 });
 
 function createChart(data) {
-    const ctx = document.getElementById('growthChart').getContext('2d');
-    
     // Destroy the existing chart if it exists
     if (myChart) {
         myChart.destroy();
+        myChart = null;
     }
 
-    // Clear the canvas
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // Remove the existing canvas and create a new one
+    const chartContainer = document.getElementById('chartContainer');
+    chartContainer.innerHTML = '<canvas id="growthChart"></canvas>';
+
+    const ctx = document.getElementById('growthChart').getContext('2d');
 
     // Create a new chart
     myChart = new Chart(ctx, {
