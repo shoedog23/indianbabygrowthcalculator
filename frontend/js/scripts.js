@@ -5,7 +5,7 @@ document.getElementById('growth-form').addEventListener('submit', function(event
     const height = document.getElementById('height').value;
     const gender = document.getElementById('gender').value;
 
-    fetch('http://localhost:5000/calculate', {
+    fetch('https://indianbabygrowthcalculator1-9df9a01a428b.herokuapp.com/calculate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
